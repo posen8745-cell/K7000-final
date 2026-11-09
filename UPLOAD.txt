@@ -1,0 +1,1 @@
+將這四個檔案上傳到 K7000-final 儲存庫根目錄，取代 index.html，保留其他舊檔。Commit changes 後等待 GitHub Pages 更新。首頁點選 L6 紙本題型即可。
