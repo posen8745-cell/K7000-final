@@ -1,3 +1,174 @@
-<!doctype html><html lang="zh-Hant"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>L6 紙本題型練習｜單字練習室</title><style>
-*{box-sizing:border-box}body{margin:0;background:#f4f7f2;color:#243f36;font:17px/1.7 system-ui,sans-serif}main{max-width:950px;margin:auto;padding:24px 18px 70px}a{color:#226954}h1{font-size:clamp(27px,5vw,40px);margin:16px 0 8px}h2{font-size:clamp(23px,4vw,30px);line-height:1.6}.panel{background:white;border:1px solid #dbe5dc;border-radius:20px;padding:clamp(18px,4vw,32px);margin:20px 0}button,select{font:inherit;border:1px solid #bccfc2;border-radius:12px;background:white;color:inherit;padding:12px 16px;cursor:pointer}button:disabled{cursor:default;opacity:.65}.primary{background:#226954;color:white}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choice{text-align:left;min-height:62px}.correct{background:#e1f3e5;border:2px solid #2b7a46}.incorrect{background:#ffe9e4;border:2px solid #b44c36}.muted{color:#61776b;font-size:14px}.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}label{display:block;margin-bottom:10px}select{width:100%}progress{width:100%;accent-color:#226954}#feedback{white-space:pre-wrap;margin:18px 0}table{width:100%;border-collapse:collapse;font-size:15px}td,th{padding:10px 5px;text-align:left;border-bottom:1px solid #dbe5dc}details{padding:14px 0;border-bottom:1px solid #dbe5dc}summary{cursor:pointer}.hidden{display:none!important}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #ce9e28;outline-offset:3px}@media(max-width:520px){.grid{grid-template-columns:1fr}.row button{flex:1}table{font-size:13px}}
-</style><main><a href="./index.html">← 回單字練習室</a><p class="muted">LEVEL 6 / PAPER PRACTICE</p><h1>L6 紙本題型練習</h1><p>從認得單字，練到看懂句子。依你提供的第 101～150 題整理，一次專心完成一題。</p><section class="panel"><label for="kind">選擇測驗</label><select id="kind"><option value="all">整份測驗 · 50 題 · 100 分</option><option value="definition">二、單字解釋 · 10 題 · 20 分</option><option value="context">三、句意測驗 · 20 題 · 40 分</option><option value="synonym">四、同義字 · 10 題 · 20 分</option><option value="antonym">五、反義字 · 10 題 · 20 分</option></select><label style="margin-top:16px"><input type="checkbox" id="shuffle"> 隨機題序（不勾選則依原題號）</label><div class="row"><button id="start" class="primary">開始測驗</button><button id="review">錯題重練</button></div><p id="storage" class="muted">成績與錯題保存在這台裝置、這個瀏覽器。</p><p id="wrongCount" class="muted"></p></section><section id="work" class="panel hidden" aria-label="作答區"><p id="status" class="muted"></p><progress id="progress" value="0" max="50"></progress><h2 id="prompt"></h2><div id="choices" class="grid"></div><div id="feedback" role="status" aria-live="polite"></div><div class="row"><button id="skip">不會，顯示答案</button><button id="next" class="primary hidden">下一題 →</button></div></section><section id="result" class="panel hidden" aria-live="polite"></section><section class="panel"><h2>最近練習</h2><div id="history"></div><p class="muted">只計首次作答；錯題重練會另列，不混入整份測驗分數。題庫共 50 題；同義字與反義字請選最接近題意的選項。</p></section></main><script src="l6-paper-data.js?v=20261109"></script><script src="l6-paper.js?v=20261109"></script></html>
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>L6 紙本題型練習｜單字練習室</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7f2;color:#243f36;font:17px/1.7 system-ui,-apple-system,sans-serif}
+main{max-width:950px;margin:auto;padding:24px 18px 70px}
+a{color:#226954}
+h1{font-size:clamp(27px,5vw,40px);margin:16px 0 8px}
+h2{font-size:clamp(23px,4vw,30px);line-height:1.6}
+.panel{background:white;border:1px solid #dbe5dc;border-radius:20px;padding:clamp(18px,4vw,32px);margin:20px 0}
+button,select{font:inherit;border:1px solid #bccfc2;border-radius:12px;background:white;color:inherit;padding:12px 16px;cursor:pointer}
+button:disabled{cursor:default;opacity:.65}
+.primary{background:#226954;color:white}
+.primary:hover{background:#18543f}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.choice{text-align:left;min-height:62px}
+.correct{background:#e1f3e5;border:2px solid #2b7a46}
+.incorrect{background:#ffe9e4;border:2px solid #b44c36}
+.muted{color:#61776b;font-size:14px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+label{display:block;margin-bottom:10px}
+select{width:100%}
+progress{width:100%;accent-color:#226954}
+#feedback{white-space:pre-wrap;margin:18px 0}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td,th{padding:10px 5px;text-align:left;border-bottom:1px solid #dbe5dc}
+details{padding:14px 0;border-bottom:1px solid #dbe5dc}
+summary{cursor:pointer}
+.hidden{display:none!important}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #ce9e28;outline-offset:3px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.row button{flex:1}table{font-size:13px}}
+</style></head><body>
+<main>
+  <a href="./index.html">← 回單字練習室</a>
+  <p class="muted">LEVEL 6 / PAPER PRACTICE</p>
+  <h1>L6 紙本題型練習</h1>
+  <p>從認得單字，練到看懂句子。現在可選「原考卷」或「全新模擬卷」，每回 50 題、100 分，一次專心完成一題。</p>
+  <section class="panel">
+    <label for="paper">選擇試卷</label>
+    <select id="paper">
+      <option value="original">原考卷｜101～150 題（照片版）</option>
+      <option value="mock1">模擬考第 1 回｜全新 Level 6 50 題</option>
+    </select>
+    <p class="muted" id="paperNote">兩份題庫分開紀錄成績與錯題，不會互相覆蓋。</p>
+    <label for="kind" style="margin-top:16px">選擇測驗</label>
+    <select id="kind">
+      <option value="all">整份測驗 · 50 題 · 100 分</option>
+      <option value="definition">二、單字解釋 · 10 題 · 20 分</option>
+      <option value="context">三、句意測驗 · 20 題 · 40 分</option>
+      <option value="synonym">四、同義字 · 10 題 · 20 分</option>
+      <option value="antonym">五、反義字 · 10 題 · 20 分</option>
+    </select>
+    <label style="margin-top:16px"><input type="checkbox" id="shuffle"> 隨機題序（不勾選則依題號）</label>
+    <div class="row"><button id="start" class="primary">開始測驗</button><button id="review">錯題重練</button></div>
+    <p id="storage" class="muted">成績與錯題保存在這台裝置、這個瀏覽器。</p>
+    <p id="wrongCount" class="muted"></p>
+  </section>
+  <section id="work" class="panel hidden" aria-label="作答區">
+    <p id="status" class="muted"></p>
+    <progress id="progress" value="0" max="50"></progress>
+    <h2 id="prompt"></h2>
+    <div id="choices" class="grid"></div>
+    <div id="feedback" role="status" aria-live="polite"></div>
+    <div class="row"><button id="skip">不會，顯示答案</button><button id="next" class="primary hidden">下一題 →</button></div>
+  </section>
+  <section id="result" class="panel hidden" aria-live="polite"></section>
+  <section class="panel">
+    <h2>最近練習</h2><div id="history"></div>
+    <p class="muted">僅計首次作答，錯題重練另列紀錄。每份題庫各 50 題，切換試卷後會顯示該份試卷的成績與錯題。</p>
+  </section>
+</main>
+
+<script src="l6-paper-data.js?v=20261109"></script>
+<script>window.L6_PAPER_MOCK1_QUESTIONS=[{"id":101,"kind":"definition","prompt":"An _____ is a short, interesting story about a real event or person.","options":["analogy","anecdote","assumption","accusation"],"answer":1,"explanation":"軼事：真實且簡短的小故事"},{"id":102,"kind":"definition","prompt":"An _____ is someone who learns a trade by working with an experienced person.","options":["attendant","analyst","apprentice","administrator"],"answer":2,"explanation":"學徒：跟著有經驗的人學習技藝"},{"id":103,"kind":"definition","prompt":"An _____ is a protein produced by the immune system to fight harmful substances.","options":["antibody","artifact","antenna","autonomy"],"answer":0,"explanation":"抗體：免疫系統產生的蛋白質"},{"id":104,"kind":"definition","prompt":"A _____ is an instrument used to measure air pressure.","options":["radiator","generator","transistor","barometer"],"answer":3,"explanation":"氣壓計：測量大氣壓力的儀器"},{"id":105,"kind":"definition","prompt":"_____ is uncertainty in meaning when a statement can be understood in different ways.","options":["autonomy","ambiguity","clarity","certainty"],"answer":1,"explanation":"模稜兩可：語意不清或有多種解釋"},{"id":106,"kind":"definition","prompt":"A _____ is a sudden event that causes great damage or suffering.","options":["complication","conspiracy","catastrophe","concession"],"answer":2,"explanation":"大災難：造成重大損害的事件"},{"id":107,"kind":"definition","prompt":"A _____ is a standard used to judge or make a decision.","options":["criterion","component","counterpart","constituent"],"answer":0,"explanation":"準則：評估或判斷的標準"},{"id":108,"kind":"definition","prompt":"A _____ is a break or crack in a bone or another hard object.","options":["friction","fragment","framework","fracture"],"answer":3,"explanation":"骨折；斷裂"},{"id":109,"kind":"definition","prompt":"A _____ is a safe place where people or animals can find protection.","options":["reservoir","sanctuary","seminar","sector"],"answer":1,"explanation":"庇護所：提供安全保護的場所"},{"id":110,"kind":"definition","prompt":"A _____ is a health professional who prepares and provides medicines.","options":["pharmacist","analyst","administrator","columnist"],"answer":0,"explanation":"藥劑師：調配與提供藥品的專業人員"},{"id":111,"kind":"context","prompt":"The instructions were so _____ that several students understood them differently.","options":["ambiguous","decisive","authentic","coherent"],"answer":0,"explanation":"模稜兩可的：使人產生不同解讀"},{"id":112,"kind":"context","prompt":"The principal decided to _____ more money to improve the school library.","options":["accumulate","anticipate","allocate","accelerate"],"answer":2,"explanation":"分配：將金錢或資源分派到特定用途"},{"id":113,"kind":"context","prompt":"Before selling the antique clock, the dealer asked an expert to _____ that it was genuine.","options":["speculate","certify","boycott","imitate"],"answer":1,"explanation":"證明；認證：確認物品為真"},{"id":114,"kind":"context","prompt":"Consumers agreed to _____ the company after reports of unfair labor practices.","options":["commemorate","boycott","reconcile","retrieve"],"answer":1,"explanation":"抵制：以拒絕購買表示抗議"},{"id":115,"kind":"context","prompt":"The new software is not _____ with the old operating system.","options":["optional","confidential","coherent","compatible"],"answer":3,"explanation":"相容的：可與另一系統一起運作"},{"id":116,"kind":"context","prompt":"Medical records must remain _____ to protect patients' privacy.","options":["confidential","collective","comparative","redundant"],"answer":0,"explanation":"機密的：不應公開給無關人士"},{"id":117,"kind":"context","prompt":"Without regular repairs, the condition of the old bridge will continue to _____.","options":["illuminate","accommodate","deteriorate","coordinate"],"answer":2,"explanation":"惡化：情況逐漸變差"},{"id":118,"kind":"context","prompt":"The doctor ordered several tests to _____ the cause of the patient's fever.","options":["prescribe","diagnose","nourish","formulate"],"answer":1,"explanation":"診斷：判定疾病或病因"},{"id":119,"kind":"context","prompt":"Firefighters ordered residents to _____ the area before the wildfire spread.","options":["evacuate","inhabit","cultivate","integrate"],"answer":0,"explanation":"撤離；疏散：離開危險區域"},{"id":120,"kind":"context","prompt":"The project is technically _____, but it may be too expensive to carry out.","options":["notorious","fragile","finite","feasible"],"answer":3,"explanation":"可行的：在實務或技術上做得到"},{"id":121,"kind":"context","prompt":"Deforestation is destroying the natural _____ of many wild animals.","options":["mechanism","habitat","heritage","inventory"],"answer":1,"explanation":"棲息地：動植物生活的自然環境"},{"id":122,"kind":"context","prompt":"The company offered a cash _____ to employees who finished the project early.","options":["concession","criterion","incentive","obligation"],"answer":2,"explanation":"誘因；獎勵：激勵行動的因素"},{"id":123,"kind":"context","prompt":"With heavy rain continuing for several days, some flooding seemed _____.","options":["inevitable","optional","ethical","fragile"],"answer":0,"explanation":"不可避免的：必定或幾乎確定會發生"},{"id":124,"kind":"context","prompt":"The course helps students _____ science, technology, and design into one project.","options":["minimize","differentiate","detach","integrate"],"answer":3,"explanation":"整合：將不同部分結合在一起"},{"id":125,"kind":"context","prompt":"The police confirmed that the online business was _____ and not part of a scam.","options":["anonymous","legitimate","notorious","outrageous"],"answer":1,"explanation":"合法的；正當的：不是詐騙行為"},{"id":126,"kind":"context","prompt":"The robot's arm can _____ small objects without breaking them.","options":["manipulate","detain","harass","expel"],"answer":0,"explanation":"操作：靈活控制或移動物品"},{"id":127,"kind":"context","prompt":"At the meeting, supporters of the proposal _____ its opponents by three to one.","options":["coincide","overlap","outnumber","infer"],"answer":2,"explanation":"數量超過：在人數上多於另一方"},{"id":128,"kind":"context","prompt":"The examination rules _____ students from using mobile phones.","options":["recruit","authorize","nourish","prohibit"],"answer":3,"explanation":"禁止：prohibit someone from doing something"},{"id":129,"kind":"context","prompt":"Steel beams were added to _____ the damaged roof.","options":["diminish","reinforce","distort","devalue"],"answer":1,"explanation":"強化：增加結構強度"},{"id":130,"kind":"context","prompt":"The technician replaced a faulty _____ on the circuit board, and the radio worked again.","options":["transistor","barometer","radiator","pipeline"],"answer":0,"explanation":"電晶體：電子電路中的重要元件"},{"id":131,"kind":"synonym","prompt":"commence","options":["postpone","cancel","begin","conclude"],"answer":2,"explanation":"開始＝begin"},{"id":132,"kind":"synonym","prompt":"crucial","options":["ordinary","essential","trivial","flexible"],"answer":1,"explanation":"關鍵的＝essential"},{"id":133,"kind":"synonym","prompt":"bizarre","options":["familiar","strange","regular","reasonable"],"answer":1,"explanation":"怪異的＝strange"},{"id":134,"kind":"synonym","prompt":"diminish","options":["increase","combine","protect","reduce"],"answer":3,"explanation":"減少＝reduce"},{"id":135,"kind":"synonym","prompt":"authentic","options":["genuine","artificial","fragile","trivial"],"answer":0,"explanation":"真實的＝genuine"},{"id":136,"kind":"synonym","prompt":"obscure","options":["obvious","distant","unclear","orderly"],"answer":2,"explanation":"模糊不清的＝unclear"},{"id":137,"kind":"synonym","prompt":"ponder","options":["ignore","hurry","announce","consider"],"answer":3,"explanation":"仔細思考＝consider"},{"id":138,"kind":"synonym","prompt":"rigorous","options":["strict","careless","generous","hesitant"],"answer":0,"explanation":"嚴格的＝strict"},{"id":139,"kind":"synonym","prompt":"serene","options":["restless","calm","reckless","anxious"],"answer":1,"explanation":"平靜的＝calm"},{"id":140,"kind":"synonym","prompt":"reconcile","options":["divide","accuse","harmonize","protest"],"answer":2,"explanation":"使和解＝harmonize"},{"id":141,"kind":"antonym","prompt":"acute","options":["chronic","severe","urgent","intense"],"answer":0,"explanation":"急性的，相反詞 chronic（慢性的）"},{"id":142,"kind":"antonym","prompt":"arrogant","options":["haughty","confident","humble","proud"],"answer":2,"explanation":"傲慢的；相反詞：謙遜的 humble"},{"id":143,"kind":"antonym","prompt":"explicit","options":["detailed","implicit","direct","obvious"],"answer":1,"explanation":"明確的；相反詞：含蓄的 implicit"},{"id":144,"kind":"antonym","prompt":"finite","options":["limited","measurable","countable","infinite"],"answer":3,"explanation":"有限的；相反詞：無限的 infinite"},{"id":145,"kind":"antonym","prompt":"gloomy","options":["cheerful","melancholy","bleak","somber"],"answer":0,"explanation":"陰鬱的；相反詞：愉快的 cheerful"},{"id":146,"kind":"antonym","prompt":"hostility","options":["aggression","rivalry","resentment","friendliness"],"answer":3,"explanation":"敵意；相反詞：友善 friendliness"},{"id":147,"kind":"antonym","prompt":"inclusive","options":["comprehensive","exclusive","collective","accessible"],"answer":1,"explanation":"包含的；相反詞：排他的 exclusive"},{"id":148,"kind":"antonym","prompt":"liberation","options":["independence","autonomy","captivity","freedom"],"answer":2,"explanation":"解放；相反詞：囚禁 captivity"},{"id":149,"kind":"antonym","prompt":"optional","options":["compulsory","voluntary","selective","alternative"],"answer":0,"explanation":"可選擇的；相反詞：強制的 compulsory"},{"id":150,"kind":"antonym","prompt":"tranquil","options":["serene","peaceful","soothing","agitated"],"answer":3,"explanation":"平靜的；相反詞：激動不安的 agitated"}];</script>
+<script>(()=>{'use strict';
+const $=id=>document.getElementById(id);
+const banks={original:window.L6_PAPER_QUESTIONS,mock1:window.L6_PAPER_MOCK1_QUESTIONS};
+const names={definition:'單字解釋',context:'句意測驗',synonym:'同義字',antonym:'反義字'};
+const paperNames={original:'原考卷',mock1:'模擬考第 1 回'};
+let paper='original',bank=banks.original,session=null;
+const storageKey=()=>paper==='original'?'k7000_l6_paper_v1':'k7000_l6_paper_mock1_v1';
+function load(){
+  try{const v=JSON.parse(localStorage.getItem(storageKey()));if(v&&Array.isArray(v.wrong)&&Array.isArray(v.history))return v;}catch{}
+  return {wrong:[],history:[]};
+}
+let record=load();
+function save(){try{localStorage.setItem(storageKey(),JSON.stringify(record));}catch{$('storage').textContent='此瀏覽器無法儲存紀錄；本次仍可作答，關閉後紀錄可能遺失。';}}
+function el(tag,value,cls){const node=document.createElement(tag);node.textContent=value;if(cls)node.className=cls;return node;}
+function update(){
+  const ids=new Set(bank.map(q=>q.id));
+  record.wrong=record.wrong.filter(id=>ids.has(id));
+  $('wrongCount').textContent=`${paperNames[paper]}錯題本：${record.wrong.length} 題`;
+  $('review').disabled=!record.wrong.length;
+  const box=$('history');box.replaceChildren();
+  if(!record.history.length)box.append(el('p','這份試卷尚無作答紀錄。','muted'));
+  record.history.slice(0,8).forEach(h=>box.append(el('p',`${new Date(h.t).toLocaleDateString('zh-TW')} · ${h.label} · ${h.right}/${h.total} 題 · ${h.right*2}/${h.total*2} 分`)));
+}
+function setPaper(next){
+  if(next===paper)return;
+  if(session&&!session.done&&!confirm('目前測驗尚未完成，切換試卷將結束這次作答，確定切換嗎？')){$('paper').value=paper;return;}
+  paper=next;bank=banks[paper];record=load();session=null;
+  $('kind').value='all';
+  $('work').classList.add('hidden');$('result').classList.add('hidden');
+  $('paperNote').textContent=paper==='original'?'目前是照片原考卷，第 101～150 題。':'目前是 Level 6 全新模擬卷，第 101～150 題。';
+  $('start').disabled=!Array.isArray(bank)||bank.length!==50;
+  update();
+}
+function start(review){
+  if(session&&!session.done&&!confirm('目前測驗尚未完成，要重新開始嗎？'))return;
+  const kind=$('kind').value;
+  let items=bank.filter(q=>(review?record.wrong.includes(q.id):true)&&(kind==='all'||q.kind===kind));
+  if(!items.length){$('wrongCount').textContent='這個題型沒有錯題；可選擇「整份測驗」來重練其他錯題。';return;}
+  if($('shuffle').checked){items=items.slice();for(let i=items.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[items[i],items[j]]=[items[j],items[i]];}}
+  session={items,at:0,answers:[],locked:false,done:false,label:(review?'錯題重練 · ':'')+(kind==='all'?'整份測驗':names[kind])};
+  $('result').classList.add('hidden');$('work').classList.remove('hidden');render();
+  $('work').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function render(){
+  const s=session,q=s.items[s.at];s.locked=false;
+  $('status').textContent=`${paperNames[paper]} · ${names[q.kind]} · 第 ${s.at+1}/${s.items.length} 題 · 題號 ${q.id} · 每題 2 分`;
+  $('progress').max=s.items.length;$('progress').value=s.at;
+  $('prompt').textContent=(q.kind==='synonym'?'選出同義字：':q.kind==='antonym'?'選出反義字：':'')+q.prompt;
+  $('feedback').textContent='';$('next').classList.add('hidden');$('skip').classList.remove('hidden');
+  $('choices').replaceChildren();
+  q.options.forEach((o,i)=>{const b=el('button',`${String.fromCharCode(65+i)}  ${o}`,'choice');b.onclick=()=>grade(i);$('choices').append(b);});
+}
+function grade(selected){
+  const s=session;if(!s||s.locked||s.done)return;s.locked=true;
+  const q=s.items[s.at],good=selected===q.answer;
+  s.answers.push({id:q.id,selected,good});
+  record.wrong=record.wrong.filter(id=>id!==q.id);if(!good)record.wrong.push(q.id);
+  save();update();
+  [...$('choices').children].forEach((b,i)=>{b.disabled=true;if(i===q.answer)b.classList.add('correct');else if(i===selected)b.classList.add('incorrect');});
+  $('feedback').textContent=`${good?'✓ 答對了！':'需要再練習。'} 正確答案：${String.fromCharCode(65+q.answer)} — ${q.options[q.answer]}\n${q.explanation}`.replace('\\n','\n');
+  $('progress').value=s.at+1;$('skip').classList.add('hidden');
+  $('next').textContent=s.at===s.items.length-1?'查看成績':'下一題 →';$('next').classList.remove('hidden');
+}
+function finish(){
+  const s=session;s.done=true;
+  const right=s.answers.filter(a=>a.good).length;
+  record.history.unshift({t:Date.now(),label:s.label,right,total:s.items.length});record.history=record.history.slice(0,50);
+  save();update();$('work').classList.add('hidden');
+  const box=$('result');box.replaceChildren(el('h2',`${right*2} / ${s.items.length*2} 分`),el('p',`答對 ${right} 題，答錯 ${s.items.length-right} 題；正確率 ${Math.round(right/s.items.length*100)}%。`));
+  const table=document.createElement('table'),hr=document.createElement('tr');
+  ['測驗','答對／題數','分數'].forEach(t=>hr.append(el('th',t)));table.append(hr);
+  for(const [k,name] of Object.entries(names)){
+    const items=s.items.filter(q=>q.kind===k);if(!items.length)continue;
+    const ids=new Set(items.map(q=>q.id)),n=s.answers.filter(a=>ids.has(a.id)&&a.good).length;
+    const row=document.createElement('tr');[name,`${n}/${items.length}`,`${n*2}/${items.length*2}`].forEach(t=>row.append(el('td',t)));table.append(row);
+  }
+  box.append(table);
+  const misses=s.answers.filter(a=>!a.good);
+  for(const a of misses){
+    const q=s.items.find(q=>q.id===a.id),d=document.createElement('details');
+    d.append(el('summary',`${q.id} · ${q.prompt}`),el('p',`你的答案：${a.selected===null?'未作答':String.fromCharCode(65+a.selected)+' — '+q.options[a.selected]}；正解：${String.fromCharCode(65+q.answer)} — ${q.options[q.answer]}`),el('p',q.explanation));box.append(d);
+  }
+  const again=el('button','重練本輪錯題','primary');again.disabled=!misses.length;
+  again.onclick=()=>{
+    const ids=new Set(misses.map(a=>a.id));
+    session={items:bank.filter(q=>ids.has(q.id)),at:0,answers:[],locked:false,done:false,label:'錯題重練 · 本輪錯題'};
+    box.classList.add('hidden');$('work').classList.remove('hidden');render();$('work').scrollIntoView({behavior:'smooth'});
+  };
+  box.append(again);box.classList.remove('hidden');box.scrollIntoView({behavior:'smooth'});
+}
+$('paper').onchange=()=>setPaper($('paper').value);
+$('start').onclick=()=>start(false);$('review').onclick=()=>start(true);
+$('skip').onclick=()=>grade(null);
+$('next').onclick=()=>{if(!session?.locked||session.done)return;if(session.at+1===session.items.length)finish();else{session.at++;render();}};
+if(!Object.values(banks).every(b=>Array.isArray(b)&&b.length===50)){
+  $('start').disabled=true;$('review').disabled=true;$('storage').textContent='題庫載入失敗，請檢查原本的 l6-paper-data.js 是否存在。';return;
+}
+update();
+})();</script>
+</body></html>
